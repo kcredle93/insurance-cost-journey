@@ -95,9 +95,6 @@ const InsuranceCostComparison: React.FC = () => {
     <div className="w-full max-w-4xl mx-auto px-6 py-10">
       <div className="animate-on-scroll animate-fade-in-up delay-100">
         <div className="text-center mb-2">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-insurance-muted text-insurance-highlight mb-2">
-            Premium Analysis
-          </span>
           <h2 className="text-3xl font-bold text-insurance-dark mb-3 tracking-tight">
             Home Insurance Cost Comparison
           </h2>
@@ -174,38 +171,6 @@ const InsuranceCostComparison: React.FC = () => {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-        </div>
-      </div>
-      
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 animate-on-scroll">
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-insurance-muted hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
-          <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Raleigh vs State Average</div>
-          <div className="text-2xl font-bold text-insurance-dark">
-            $5 <span className="text-green-500 text-base font-medium">lower</span>
-          </div>
-          <div className="mt-2 text-sm text-gray-600">
-            Raleigh homeowners pay slightly less than the North Carolina average
-          </div>
-        </div>
-        
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-insurance-muted hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
-          <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Lowest vs Highest</div>
-          <div className="text-2xl font-bold text-insurance-dark">
-            $305 <span className="text-insurance-highlight text-base font-medium">difference</span>
-          </div>
-          <div className="mt-2 text-sm text-gray-600">
-            Between Greensboro ($221) and Wilmington ($526)
-          </div>
-        </div>
-        
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-insurance-muted hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
-          <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Coastal Impact</div>
-          <div className="text-2xl font-bold text-insurance-dark">
-            95% <span className="text-base font-medium text-insurance-state">higher</span>
-          </div>
-          <div className="mt-2 text-sm text-gray-600">
-            Wilmington premiums vs state average due to hurricane risk
-          </div>
         </div>
       </div>
     </div>
