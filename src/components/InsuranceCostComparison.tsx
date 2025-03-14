@@ -48,6 +48,8 @@ const InsuranceCostComparison: React.FC = () => {
     { city: 'Durham', cost: 262, isHighlighted: false, isStateAverage: false },
     { city: 'Raleigh', cost: 265, isHighlighted: true, isStateAverage: false },
     { city: 'North Carolina', cost: 270, isHighlighted: false, isStateAverage: true },
+    { city: 'Greenville', cost: 366, isHighlighted: false, isStateAverage: false },
+    { city: 'Wilmington', cost: 526, isHighlighted: false, isStateAverage: false },
   ];
   
   // Sort data by cost in ascending order
@@ -133,12 +135,15 @@ const InsuranceCostComparison: React.FC = () => {
                 tickLine={false}
                 tick={{ fontSize: 12, fill: '#64748b' }}
                 dy={10}
+                angle={-15}
+                textAnchor="end"
+                height={60}
               />
               <YAxis 
                 axisLine={false}
                 tickLine={false}
                 tick={{ fontSize: 12, fill: '#64748b' }}
-                domain={[200, 'dataMax + 20']}
+                domain={[200, 550]}
                 tickFormatter={(value) => `$${value}`}
               />
               <Tooltip 
@@ -195,22 +200,22 @@ const InsuranceCostComparison: React.FC = () => {
         </div>
         
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
-          <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Lowest Premium</div>
+          <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Lowest vs Highest</div>
           <div className="text-2xl font-bold text-gray-900">
-            Greensboro <span className="text-insurance-highlight text-base font-medium">$221</span>
+            $305 <span className="text-insurance-highlight text-base font-medium">difference</span>
           </div>
           <div className="mt-2 text-sm text-gray-600">
-            18% lower than the state average
+            Between Greensboro ($221) and Wilmington ($526)
           </div>
         </div>
         
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
-          <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Premium Range</div>
+          <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Coastal Impact</div>
           <div className="text-2xl font-bold text-gray-900">
-            $49 <span className="text-base font-medium text-gray-500">difference</span>
+            95% <span className="text-base font-medium text-red-500">higher</span>
           </div>
           <div className="mt-2 text-sm text-gray-600">
-            Between highest and lowest city premiums
+            Wilmington premiums vs state average due to hurricane risk
           </div>
         </div>
       </div>
