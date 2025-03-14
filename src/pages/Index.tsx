@@ -1,11 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React from 'react';
+import InsuranceCostComparison from '@/components/InsuranceCostComparison';
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-gradient-to-b from-white to-insurance-base">
+      <div className="container mx-auto px-4 py-12 md:py-20">
+        <header className="text-center mb-16 animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
+            North Carolina Insurance Costs
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Explore how home insurance premiums compare across major cities in North Carolina
+          </p>
+        </header>
+        
+        <main>
+          <InsuranceCostComparison />
+          
+          <div className="mt-16 text-center animate-on-scroll">
+            <p className="text-sm text-gray-500 max-w-xl mx-auto">
+              Data based on average monthly home insurance premiums for a standard policy with $250,000 dwelling coverage in North Carolina cities, as of 2023.
+            </p>
+          </div>
+        </main>
       </div>
     </div>
   );
