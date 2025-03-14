@@ -4,7 +4,7 @@ import InsuranceCostComparison from '@/components/InsuranceCostComparison';
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-insurance-muted/40">
+    <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-12 md:py-20">
         <header className="text-center mb-16 animate-fade-in">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-insurance-dark mb-4">

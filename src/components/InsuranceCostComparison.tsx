@@ -63,7 +63,7 @@ const InsuranceCostComparison: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
   
-  // Use ResizeObserver to check if element is visible
+  // Use IntersectionObserver to check if element is visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -109,7 +109,7 @@ const InsuranceCostComparison: React.FC = () => {
       
       <div 
         className={cn(
-          "mt-10 h-[420px] chart-container animate-on-scroll rounded-2xl shadow-sm border border-insurance-muted overflow-hidden bg-gradient-to-b from-white to-insurance-muted/50",
+          "mt-10 h-[420px] chart-container animate-on-scroll overflow-hidden bg-white rounded-2xl shadow-sm border border-insurance-muted",
           animateChart ? "opacity-100" : "opacity-0"
         )}
       >
@@ -119,15 +119,6 @@ const InsuranceCostComparison: React.FC = () => {
               data={sortedData}
               margin={{ top: 25, right: 40, left: 30, bottom: 40 }}
             >
-              <defs>
-                <filter id="barGlow" height="300%" width="300%" x="-100%" y="-100%">
-                  <feGaussianBlur stdDeviation="4" result="coloredBlur" />
-                  <feMerge>
-                    <feMergeNode in="coloredBlur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.15} />
               <XAxis 
                 dataKey="city" 
@@ -173,13 +164,11 @@ const InsuranceCostComparison: React.FC = () => {
                 radius={[4, 4, 0, 0]}
                 animationDuration={1800}
                 animationEasing="ease-out"
-                className="bar-with-glow"
               >
                 {sortedData.map((entry, index) => (
                   <Cell 
                     key={`cell-${index}`} 
                     fill={getBarColor(entry)}
-                    filter={entry.isHighlighted ? "url(#barGlow)" : undefined}
                   />
                 ))}
               </Bar>
@@ -219,17 +208,6 @@ const InsuranceCostComparison: React.FC = () => {
           </div>
         </div>
       </div>
-
-      <style>
-        {`
-        .chart-container .recharts-surface {
-          overflow: visible;
-        }
-        .bar-with-glow {
-          filter: drop-shadow(0px 4px 6px rgba(32, 159, 189, 0.3));
-        }
-        `}
-      </style>
     </div>
   );
 };
