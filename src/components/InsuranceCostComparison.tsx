@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { 
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis, 
   YAxis, 
   CartesianGrid, 
@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
   Legend,
   ReferenceLine,
-  Area
+  Cell
 } from 'recharts';
 import { cn } from '@/lib/utils';
 
@@ -37,82 +37,6 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     );
   }
   return null;
-};
-
-// Custom dot component to handle different colors based on data properties
-const CustomDot = (props: any) => {
-  const { cx, cy, payload } = props;
-  
-  let strokeColor = '#8B5CF6'; // Default color
-  let size = 6;
-  
-  // Set different colors based on data properties
-  if (payload.isHighlighted) {
-    strokeColor = '#D946EF';
-    size = 8;
-  } else if (payload.isStateAverage) {
-    strokeColor = '#0EA5E9';
-  }
-  
-  return (
-    <g>
-      <circle 
-        cx={cx} 
-        cy={cy} 
-        r={size + 4} 
-        fill="rgba(255, 255, 255, 0.15)" 
-        className="dot-shadow"
-      />
-      <circle 
-        cx={cx} 
-        cy={cy} 
-        r={size} 
-        stroke={strokeColor} 
-        strokeWidth={3} 
-        fill="white" 
-        className="dot-inner"
-      />
-    </g>
-  );
-};
-
-// Custom active dot component
-const CustomActiveDot = (props: any) => {
-  const { cx, cy, payload } = props;
-  
-  const baseColor = payload.isHighlighted 
-    ? '#D946EF' 
-    : (payload.isStateAverage ? '#0EA5E9' : '#8B5CF6');
-  
-  return (
-    <g>
-      <circle 
-        cx={cx} 
-        cy={cy} 
-        r={16} 
-        fill={baseColor} 
-        fillOpacity={0.15} 
-        className="active-dot-outer"
-      />
-      <circle 
-        cx={cx} 
-        cy={cy} 
-        r={12} 
-        fill={baseColor} 
-        fillOpacity={0.3}
-        className="active-dot-middle" 
-      />
-      <circle 
-        cx={cx} 
-        cy={cy} 
-        r={8} 
-        fill={baseColor}
-        strokeWidth={2}
-        stroke="white" 
-        className="active-dot-inner"
-      />
-    </g>
-  );
 };
 
 const InsuranceCostComparison: React.FC = () => {
@@ -158,6 +82,13 @@ const InsuranceCostComparison: React.FC = () => {
     };
   }, []);
 
+  // Function to determine bar color based on data
+  const getBarColor = (entry: InsuranceData) => {
+    if (entry.isStateAverage) return "#0EA5E9";
+    if (entry.isHighlighted) return "#D946EF";
+    return "#8B5CF6";
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto px-6 py-10">
       <div className="animate-on-scroll animate-fade-in-up delay-100">
@@ -182,17 +113,13 @@ const InsuranceCostComparison: React.FC = () => {
       >
         <div className="p-5 h-full">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart
+            <BarChart
               data={sortedData}
               margin={{ top: 25, right: 40, left: 30, bottom: 40 }}
             >
               <defs>
-                <linearGradient id="colorCost" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.2}/>
-                  <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0}/>
-                </linearGradient>
-                <filter id="glow" height="300%" width="300%" x="-100%" y="-100%">
-                  <feGaussianBlur stdDeviation="5" result="coloredBlur" />
+                <filter id="barGlow" height="300%" width="300%" x="-100%" y="-100%">
+                  <feGaussianBlur stdDeviation="4" result="coloredBlur" />
                   <feMerge>
                     <feMergeNode in="coloredBlur" />
                     <feMergeNode in="SourceGraphic" />
@@ -216,7 +143,7 @@ const InsuranceCostComparison: React.FC = () => {
               />
               <Tooltip 
                 content={<CustomTooltip />}
-                cursor={{ stroke: '#E5DEFF', strokeWidth: 1 }}
+                cursor={{ fill: 'rgba(229, 222, 255, 0.15)' }}
                 wrapperStyle={{ outline: 'none' }}
               />
               <Legend 
@@ -236,25 +163,22 @@ const InsuranceCostComparison: React.FC = () => {
                   fontWeight: 500 
                 }} 
               />
-              <Area 
-                type="monotone" 
+              <Bar 
                 dataKey="cost" 
-                fillOpacity={1}
-                stroke="none"
-                fill="url(#colorCost)"
-              />
-              <Line 
-                type="monotone" 
-                dataKey="cost" 
-                stroke="#8B5CF6" 
-                strokeWidth={3}
-                dot={<CustomDot />}
-                activeDot={<CustomActiveDot />}
+                radius={[4, 4, 0, 0]}
                 animationDuration={1800}
                 animationEasing="ease-out"
-                style={{ filter: 'url(#glow)' }}
-              />
-            </LineChart>
+                className="bar-with-glow"
+              >
+                {sortedData.map((entry, index) => (
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={getBarColor(entry)}
+                    filter={entry.isHighlighted ? "url(#barGlow)" : undefined}
+                  />
+                ))}
+              </Bar>
+            </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
@@ -291,14 +215,16 @@ const InsuranceCostComparison: React.FC = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>
+        {`
         .chart-container .recharts-surface {
           overflow: visible;
         }
-        .dot-inner, .active-dot-inner {
-          filter: drop-shadow(0px 2px 4px rgba(139, 92, 246, 0.3));
+        .bar-with-glow {
+          filter: drop-shadow(0px 4px 6px rgba(139, 92, 246, 0.2));
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 };
