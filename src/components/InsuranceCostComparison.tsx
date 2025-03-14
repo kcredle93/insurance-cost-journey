@@ -43,37 +43,62 @@ const CustomDot = (props: any) => {
   const { cx, cy, payload } = props;
   
   let strokeColor = '#8B5CF6'; // Default color
+  let size = 6;
   
   // Set different colors based on data properties
   if (payload.isHighlighted) {
     strokeColor = '#D946EF';
+    size = 7;
   } else if (payload.isStateAverage) {
     strokeColor = '#0EA5E9';
   }
   
   return (
-    <circle 
-      cx={cx} 
-      cy={cy} 
-      r={6} 
-      stroke={strokeColor} 
-      strokeWidth={3} 
-      fill="#fff" 
-    />
+    <g>
+      <circle 
+        cx={cx} 
+        cy={cy} 
+        r={size + 2} 
+        fill="rgba(255, 255, 255, 0.2)" 
+      />
+      <circle 
+        cx={cx} 
+        cy={cy} 
+        r={size} 
+        stroke={strokeColor} 
+        strokeWidth={3} 
+        fill="#fff" 
+      />
+    </g>
   );
 };
 
 // Custom active dot component
 const CustomActiveDot = (props: any) => {
-  const { cx, cy } = props;
+  const { cx, cy, payload } = props;
+  
+  const baseColor = payload.isHighlighted 
+    ? '#D946EF' 
+    : (payload.isStateAverage ? '#0EA5E9' : '#8B5CF6');
+  
   return (
-    <circle 
-      cx={cx} 
-      cy={cy} 
-      r={8} 
-      fill="#D946EF" 
-      strokeWidth={0} 
-    />
+    <g>
+      <circle 
+        cx={cx} 
+        cy={cy} 
+        r={12} 
+        fill={baseColor} 
+        fillOpacity={0.2} 
+      />
+      <circle 
+        cx={cx} 
+        cy={cy} 
+        r={8} 
+        fill={baseColor}
+        strokeWidth={2}
+        stroke="#fff" 
+      />
+    </g>
   );
 };
 
@@ -138,7 +163,7 @@ const InsuranceCostComparison: React.FC = () => {
       
       <div 
         className={cn(
-          "mt-10 h-[400px] chart-container animate-on-scroll",
+          "mt-10 h-[400px] chart-container animate-on-scroll bg-white/80 p-4 rounded-xl shadow-sm border border-gray-100",
           animateChart ? "opacity-100" : "opacity-0"
         )}
       >
@@ -147,6 +172,12 @@ const InsuranceCostComparison: React.FC = () => {
             data={sortedData}
             margin={{ top: 20, right: 30, left: 30, bottom: 40 }}
           >
+            <defs>
+              <linearGradient id="colorCost" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.2}/>
+                <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0}/>
+              </linearGradient>
+            </defs>
             <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.2} />
             <XAxis 
               dataKey="city" 
@@ -191,13 +222,14 @@ const InsuranceCostComparison: React.FC = () => {
               activeDot={<CustomActiveDot />}
               animationDuration={1500}
               animationEasing="ease-out"
+              fill="url(#colorCost)"
             />
           </LineChart>
         </ResponsiveContainer>
       </div>
       
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 animate-on-scroll">
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
           <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Raleigh vs State Average</div>
           <div className="text-2xl font-bold text-gray-900">
             $5 <span className="text-green-500 text-base font-medium">lower</span>
@@ -207,7 +239,7 @@ const InsuranceCostComparison: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
           <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Lowest Premium</div>
           <div className="text-2xl font-bold text-gray-900">
             Greensboro <span className="text-insurance-highlight text-base font-medium">$221</span>
@@ -217,7 +249,7 @@ const InsuranceCostComparison: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
           <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Premium Range</div>
           <div className="text-2xl font-bold text-gray-900">
             $49 <span className="text-base font-medium text-gray-500">difference</span>
