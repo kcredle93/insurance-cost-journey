@@ -71,17 +71,17 @@ const InsuranceCostComparison: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white">
-      <div className="text-center mb-6">
+    <div className="w-full h-full bg-white font-inter">
+      <div className="text-center mb-6 pt-4">
         <h2 className="text-3xl font-bold text-insurance-dark mb-3 tracking-tight">
           Home Insurance Cost Comparison
         </h2>
-        <p className="text-gray-500 max-w-2xl mx-auto mb-8">
+        <p className="text-gray-500 max-w-2xl mx-auto mb-6">
           Average monthly home insurance premiums across major North Carolina cities compared to the state average.
         </p>
       </div>
       
-      <div className="h-[500px] w-full bg-white">
+      <div className="h-[500px] w-full bg-white px-4">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={sortedData}
@@ -142,6 +142,9 @@ const InsuranceCostComparison: React.FC = () => {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
+      </div>
+      <div className="text-center text-xs text-gray-400 mt-2 pb-4">
+        Data represents average monthly premiums for $200,000 homes with standard coverage.
       </div>
     </div>
   );
