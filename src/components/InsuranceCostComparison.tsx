@@ -25,11 +25,11 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="premium-tooltip bg-white p-3 rounded-xl shadow-lg border border-gray-200">
-        <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">
+      <div className="premium-tooltip bg-white p-3 rounded-xl shadow-lg border border-insurance-muted">
+        <p className="text-xs uppercase tracking-wider text-insurance-dark mb-1">
           {data.isStateAverage ? 'State Average' : 'City'}
         </p>
-        <p className="font-semibold text-gray-900 mb-1">{label}</p>
+        <p className="font-semibold text-insurance-dark mb-1">{label}</p>
         <p className="text-lg font-bold text-insurance-highlight">
           ${data.cost}<span className="text-xs text-gray-500 font-normal">/month</span>
         </p>
@@ -86,9 +86,9 @@ const InsuranceCostComparison: React.FC = () => {
 
   // Function to determine bar color based on data
   const getBarColor = (entry: InsuranceData) => {
-    if (entry.isStateAverage) return "#0EA5E9";
-    if (entry.isHighlighted) return "#D946EF";
-    return "#8B5CF6";
+    if (entry.isStateAverage) return "#FB8500"; // Orange for state average
+    if (entry.isHighlighted) return "#FFB703"; // Yellow for highlighted city
+    return "#209FBD"; // Teal blue for regular cities
   };
 
   return (
@@ -98,7 +98,7 @@ const InsuranceCostComparison: React.FC = () => {
           <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-insurance-muted text-insurance-highlight mb-2">
             Premium Analysis
           </span>
-          <h2 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+          <h2 className="text-3xl font-bold text-insurance-dark mb-3 tracking-tight">
             Home Insurance Cost Comparison
           </h2>
           <p className="text-gray-500 max-w-2xl mx-auto">
@@ -109,7 +109,7 @@ const InsuranceCostComparison: React.FC = () => {
       
       <div 
         className={cn(
-          "mt-10 h-[420px] chart-container animate-on-scroll rounded-2xl shadow-sm border border-gray-100 overflow-hidden bg-gradient-to-b from-white to-gray-50/80",
+          "mt-10 h-[420px] chart-container animate-on-scroll rounded-2xl shadow-sm border border-insurance-muted overflow-hidden bg-gradient-to-b from-white to-insurance-muted/50",
           animateChart ? "opacity-100" : "opacity-0"
         )}
       >
@@ -133,7 +133,7 @@ const InsuranceCostComparison: React.FC = () => {
                 dataKey="city" 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 12, fill: '#64748b' }}
+                tick={{ fontSize: 12, fill: '#090739' }}
                 dy={10}
                 angle={-15}
                 textAnchor="end"
@@ -142,13 +142,13 @@ const InsuranceCostComparison: React.FC = () => {
               <YAxis 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 12, fill: '#64748b' }}
+                tick={{ fontSize: 12, fill: '#090739' }}
                 domain={[200, 550]}
                 tickFormatter={(value) => `$${value}`}
               />
               <Tooltip 
                 content={<CustomTooltip />}
-                cursor={{ fill: 'rgba(229, 222, 255, 0.15)' }}
+                cursor={{ fill: 'rgba(226, 243, 251, 0.3)' }}
                 wrapperStyle={{ outline: 'none' }}
               />
               <Legend 
@@ -158,12 +158,12 @@ const InsuranceCostComparison: React.FC = () => {
               />
               <ReferenceLine 
                 y={270} 
-                stroke="#0EA5E9" 
+                stroke="#FB8500" 
                 strokeDasharray="3 3" 
                 label={{ 
                   value: 'State Avg: $270', 
                   position: 'right', 
-                  fill: '#0EA5E9', 
+                  fill: '#FB8500', 
                   fontSize: 12,
                   fontWeight: 500 
                 }} 
@@ -189,9 +189,9 @@ const InsuranceCostComparison: React.FC = () => {
       </div>
       
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 animate-on-scroll">
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-insurance-muted hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
           <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Raleigh vs State Average</div>
-          <div className="text-2xl font-bold text-gray-900">
+          <div className="text-2xl font-bold text-insurance-dark">
             $5 <span className="text-green-500 text-base font-medium">lower</span>
           </div>
           <div className="mt-2 text-sm text-gray-600">
@@ -199,9 +199,9 @@ const InsuranceCostComparison: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-insurance-muted hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
           <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Lowest vs Highest</div>
-          <div className="text-2xl font-bold text-gray-900">
+          <div className="text-2xl font-bold text-insurance-dark">
             $305 <span className="text-insurance-highlight text-base font-medium">difference</span>
           </div>
           <div className="mt-2 text-sm text-gray-600">
@@ -209,10 +209,10 @@ const InsuranceCostComparison: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-insurance-muted hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
           <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Coastal Impact</div>
-          <div className="text-2xl font-bold text-gray-900">
-            95% <span className="text-base font-medium text-red-500">higher</span>
+          <div className="text-2xl font-bold text-insurance-dark">
+            95% <span className="text-base font-medium text-insurance-state">higher</span>
           </div>
           <div className="mt-2 text-sm text-gray-600">
             Wilmington premiums vs state average due to hurricane risk
@@ -226,7 +226,7 @@ const InsuranceCostComparison: React.FC = () => {
           overflow: visible;
         }
         .bar-with-glow {
-          filter: drop-shadow(0px 4px 6px rgba(139, 92, 246, 0.2));
+          filter: drop-shadow(0px 4px 6px rgba(32, 159, 189, 0.3));
         }
         `}
       </style>

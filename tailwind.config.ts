@@ -64,11 +64,12 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				insurance: {
-					highlight: '#8B5CF6',
-					muted: '#E5DEFF',
-					base: '#F1F0FB',
-					accent: '#D946EF',
-					state: '#0EA5E9'
+					highlight: '#209FBD', // Changed from purple to teal blue
+					muted: '#E2F3FB',     // Changed to light blue
+					base: '#F1F0FB',      // Kept light background
+					accent: '#FFB703',    // Changed to yellow
+					state: '#FB8500',     // Changed to orange
+					dark: '#090739'       // Added dark navy blue
 				}
 			},
 			borderRadius: {
