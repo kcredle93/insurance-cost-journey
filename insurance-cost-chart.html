@@ -1,37 +1,21 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Insurance Cost Comparison</title>
-  <!-- Load React -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  
-  <!-- Load Recharts -->
-  <script src="https://unpkg.com/recharts@2.12.7/umd/Recharts.min.js"></script>
-  
-  <!-- Load Babel for JSX -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     
-    body {
+    .insurance-chart-container {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    
-    .chart-container {
       width: 100%;
       max-width: 1000px;
       margin: 0 auto;
-      font-family: 'Inter', sans-serif;
+      padding: 20px 0;
     }
     
-    h2 {
+    .insurance-chart-title {
       font-size: 1.875rem;
       font-weight: 700;
       color: #090739;
@@ -41,220 +25,153 @@
       letter-spacing: -0.025em;
     }
     
-    .description {
+    .insurance-chart-description {
       color: #6b7280;
       max-width: 36rem;
       margin: 0 auto 1.5rem;
       text-align: center;
     }
     
-    .chart-wrapper {
-      height: 500px;
+    .insurance-chart-image {
       width: 100%;
-      padding: 0 1rem;
+      height: auto;
+      max-width: 1000px;
+      margin: 0 auto;
+      display: block;
     }
     
-    .data-note {
+    .insurance-chart-data {
+      margin-top: 2rem;
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 0.875rem;
+    }
+    
+    .insurance-chart-data th,
+    .insurance-chart-data td {
+      border: 1px solid #e5e7eb;
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+    
+    .insurance-chart-data th {
+      background-color: #f9fafb;
+      font-weight: 600;
+      color: #111827;
+    }
+    
+    .insurance-chart-data td {
+      color: #374151;
+    }
+    
+    .insurance-chart-data tr:nth-child(even) {
+      background-color: #f9fafb;
+    }
+    
+    .insurance-chart-data .highlighted {
+      background-color: #fff7ed;
+    }
+    
+    .insurance-chart-data .state-average {
+      background-color: #fffbeb;
+    }
+    
+    .insurance-chart-data .cost {
+      font-family: monospace;
+      font-weight: 600;
+      text-align: right;
+    }
+    
+    .insurance-chart-note {
       text-align: center;
       font-size: 0.75rem;
       color: #9ca3af;
       margin-top: 0.5rem;
-      padding-bottom: 1rem;
     }
     
-    .premium-tooltip {
-      background-color: white;
-      padding: 0.75rem;
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      position: relative;
-    }
-    
-    .premium-tooltip::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%) rotate(45deg);
-      width: 10px;
-      height: 10px;
-      background-color: white;
-      border-right: 1px solid rgba(0, 0, 0, 0.05);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    }
-    
-    .tooltip-city-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #090739;
-      margin-bottom: 0.25rem;
-    }
-    
-    .tooltip-city {
-      font-weight: 600;
-      color: #090739;
-      margin-bottom: 0.25rem;
-    }
-    
-    .tooltip-cost {
-      font-size: 1.125rem;
-      font-weight: 700;
-      color: #209FBD;
-    }
-    
-    .tooltip-cost .per-month {
-      font-size: 0.75rem;
-      font-weight: 400;
-      color: #6b7280;
+    @media (max-width: 640px) {
+      .insurance-chart-title {
+        font-size: 1.5rem;
+      }
+      
+      .insurance-chart-data th,
+      .insurance-chart-data td {
+        padding: 0.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="insurance-chart-root"></div>
-
-  <script type="text/babel">
-    const { 
-      BarChart, Bar, XAxis, YAxis, CartesianGrid, 
-      Tooltip, ResponsiveContainer, Legend, ReferenceLine, Cell 
-    } = Recharts;
-    const { useState, useEffect } = React;
+  <div class="insurance-chart-container">
+    <h2 class="insurance-chart-title">Home Insurance Cost Comparison</h2>
+    <p class="insurance-chart-description">
+      Average monthly home insurance premiums across major North Carolina cities compared to the state average.
+    </p>
     
-    // Custom tooltip component
-    const CustomTooltip = ({ active, payload, label }) => {
-      if (active && payload && payload.length) {
-        const data = payload[0].payload;
-        return (
-          <div className="premium-tooltip">
-            <p className="tooltip-city-label">
-              {data.isStateAverage ? 'State Average' : 'City'}
-            </p>
-            <p className="tooltip-city">{label}</p>
-            <p className="tooltip-cost">
-              ${data.cost}<span className="per-month">/month</span>
-            </p>
-          </div>
-        );
-      }
-      return null;
-    };
+    <!-- Chart visualization as an image placeholder -->
+    <img src="https://via.placeholder.com/1000x500?text=Insurance+Cost+Comparison+Chart" alt="Insurance Cost Comparison Chart" class="insurance-chart-image">
     
-    // Main chart component
-    const InsuranceCostComparison = () => {
-      const [animateChart, setAnimateChart] = useState(false);
-      
-      const data = [
-        { city: 'Greensboro', cost: 221, isHighlighted: false, isStateAverage: false },
-        { city: 'Charlotte', cost: 237, isHighlighted: false, isStateAverage: false },
-        { city: 'Durham', cost: 262, isHighlighted: false, isStateAverage: false },
-        { city: 'Raleigh', cost: 265, isHighlighted: true, isStateAverage: false },
-        { city: 'North Carolina', cost: 270, isHighlighted: false, isStateAverage: true },
-        { city: 'Greenville', cost: 366, isHighlighted: false, isStateAverage: false },
-        { city: 'Wilmington', cost: 526, isHighlighted: false, isStateAverage: false },
-      ];
-      
-      // Sort data by cost in ascending order
-      const sortedData = [...data].sort((a, b) => a.cost - b.cost);
-      
-      useEffect(() => {
-        const timer = setTimeout(() => {
-          setAnimateChart(true);
-        }, 100);
-        
-        return () => clearTimeout(timer);
-      }, []);
-
-      // Function to determine bar color based on data
-      const getBarColor = (entry) => {
-        if (entry.isStateAverage) return "#FB8500"; // Orange for state average
-        if (entry.isHighlighted) return "#FFB703"; // Yellow for highlighted city
-        return "#209FBD"; // Teal blue for regular cities
-      };
-
-      return (
-        <div className="chart-container">
-          <div className="text-center">
-            <h2>Home Insurance Cost Comparison</h2>
-            <p className="description">
-              Average monthly home insurance premiums across major North Carolina cities compared to the state average.
-            </p>
-          </div>
-          
-          <div className="chart-wrapper">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={sortedData}
-                margin={{ top: 25, right: 40, left: 30, bottom: 40 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.15} />
-                <XAxis 
-                  dataKey="city" 
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fontSize: 12, fill: '#090739' }}
-                  dy={10}
-                  angle={-15}
-                  textAnchor="end"
-                  height={60}
-                />
-                <YAxis 
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fontSize: 12, fill: '#090739' }}
-                  domain={[200, 550]}
-                  tickFormatter={(value) => `$${value}`}
-                />
-                <Tooltip 
-                  content={<CustomTooltip />}
-                  cursor={{ fill: 'rgba(226, 243, 251, 0.3)' }}
-                  wrapperStyle={{ outline: 'none' }}
-                />
-                <Legend 
-                  verticalAlign="top" 
-                  height={36}
-                  formatter={(value) => value === "cost" ? "Monthly Premium" : value}
-                />
-                <ReferenceLine 
-                  y={270} 
-                  stroke="#FB8500" 
-                  strokeDasharray="3 3" 
-                  label={{ 
-                    value: 'State Avg: $270', 
-                    position: 'right', 
-                    fill: '#FB8500', 
-                    fontSize: 12,
-                    fontWeight: 500 
-                  }} 
-                />
-                <Bar 
-                  dataKey="cost" 
-                  radius={[4, 4, 0, 0]}
-                  animationDuration={1800}
-                  animationEasing="ease-out"
-                >
-                  {sortedData.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={getBarColor(entry)}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="data-note">
-            Data represents average monthly premiums for $200,000 homes with standard coverage.
-          </div>
-        </div>
-      );
-    };
+    <!-- Data table as a fallback and for accessibility -->
+    <table class="insurance-chart-data">
+      <thead>
+        <tr>
+          <th>City</th>
+          <th>Monthly Premium</th>
+          <th>Compared to State Avg</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Greensboro</td>
+          <td class="cost">$221</td>
+          <td>18% lower</td>
+        </tr>
+        <tr>
+          <td>Charlotte</td>
+          <td class="cost">$237</td>
+          <td>12% lower</td>
+        </tr>
+        <tr>
+          <td>Durham</td>
+          <td class="cost">$262</td>
+          <td>3% lower</td>
+        </tr>
+        <tr class="highlighted">
+          <td>Raleigh</td>
+          <td class="cost">$265</td>
+          <td>2% lower</td>
+        </tr>
+        <tr class="state-average">
+          <td>North Carolina (State Average)</td>
+          <td class="cost">$270</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Greenville</td>
+          <td class="cost">$366</td>
+          <td>36% higher</td>
+        </tr>
+        <tr>
+          <td>Wilmington</td>
+          <td class="cost">$526</td>
+          <td>95% higher</td>
+        </tr>
+      </tbody>
+    </table>
     
-    // Render the component
-    ReactDOM.render(
-      <InsuranceCostComparison />,
-      document.getElementById('insurance-chart-root')
-    );
+    <p class="insurance-chart-note">
+      Data represents average monthly premiums for $200,000 homes with standard coverage.
+    </p>
+  </div>
+  
+  <script>
+    // You can replace the placeholder image with an actual chart image
+    // This script can be used to dynamically replace the image or add interactivity
+    document.addEventListener('DOMContentLoaded', function() {
+      // Example: You could replace the placeholder with an actual chart image
+      // const chartImg = document.querySelector('.insurance-chart-image');
+      // chartImg.src = 'path-to-your-actual-chart-image.png';
+    });
   </script>
 </body>
 </html>
