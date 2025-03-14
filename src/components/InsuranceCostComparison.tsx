@@ -1,14 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { 
-  BarChart, 
-  Bar, 
+  LineChart,
+  Line,
   XAxis, 
   YAxis, 
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  Cell
+  Legend,
+  ReferenceLine
 } from 'recharts';
 import { cn } from '@/lib/utils';
 
@@ -98,15 +99,14 @@ const InsuranceCostComparison: React.FC = () => {
       
       <div 
         className={cn(
-          "mt-10 h-[400px] bar-chart-container animate-on-scroll",
+          "mt-10 h-[400px] chart-container animate-on-scroll",
           animateChart ? "opacity-100" : "opacity-0"
         )}
       >
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart
+          <LineChart
             data={sortedData}
             margin={{ top: 20, right: 30, left: 30, bottom: 40 }}
-            barSize={45}
           >
             <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.2} />
             <XAxis 
@@ -120,40 +120,45 @@ const InsuranceCostComparison: React.FC = () => {
               axisLine={false}
               tickLine={false}
               tick={{ fontSize: 12, fill: '#64748b' }}
-              domain={[0, 'dataMax + 50']}
+              domain={[200, 300]}
               tickFormatter={(value) => `$${value}`}
             />
             <Tooltip 
               content={<CustomTooltip />}
-              cursor={{ fill: 'rgba(0, 0, 0, 0.02)' }}
+              cursor={{ stroke: '#E5DEFF', strokeWidth: 1 }}
             />
-            <Bar 
+            <Legend 
+              verticalAlign="top" 
+              height={36}
+              formatter={(value) => value === "cost" ? "Monthly Premium" : value}
+            />
+            <ReferenceLine 
+              y={270} 
+              stroke="#0EA5E9" 
+              strokeDasharray="3 3" 
+              label={{ 
+                value: 'State Avg: $270', 
+                position: 'right', 
+                fill: '#0EA5E9', 
+                fontSize: 12 
+              }} 
+            />
+            <Line 
+              type="monotone" 
               dataKey="cost" 
-              radius={[4, 4, 0, 0]}
+              stroke="#8B5CF6" 
+              strokeWidth={3}
+              dot={{ 
+                r: 6, 
+                strokeWidth: 3, 
+                fill: '#fff',
+                stroke: (entry) => entry.isHighlighted ? '#D946EF' : (entry.isStateAverage ? '#0EA5E9' : '#8B5CF6')
+              }}
+              activeDot={{ r: 8, strokeWidth: 0, fill: '#D946EF' }}
               animationDuration={1500}
               animationEasing="ease-out"
-            >
-              {sortedData.map((entry, index) => {
-                let fillColor = '#E5DEFF';
-                let strokeColor = 'none';
-                
-                if (entry.isStateAverage) {
-                  fillColor = '#0EA5E9';
-                } else if (entry.isHighlighted) {
-                  fillColor = '#8B5CF6';
-                }
-                
-                return (
-                  <Cell 
-                    key={`cell-${index}`} 
-                    fill={fillColor}
-                    stroke={strokeColor}
-                    className="transition-opacity duration-300"
-                  />
-                );
-              })}
-            </Bar>
-          </BarChart>
+            />
+          </LineChart>
         </ResponsiveContainer>
       </div>
       
