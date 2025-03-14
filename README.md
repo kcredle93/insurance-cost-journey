@@ -1,69 +1,50 @@
-# Welcome to your Lovable project
 
-## Project info
+# Insurance Cost Chart WordPress Plugin
 
-**URL**: https://lovable.dev/projects/54845dfd-e36f-4d9d-861b-a96133b136e5
+A simple WordPress plugin that displays an insurance cost comparison chart via shortcode.
 
-## How can I edit this code?
+## Installation
 
-There are several ways of editing your application.
+1. Download the plugin files from this repository.
+2. Upload the plugin files to the `/wp-content/plugins/insurance-cost-chart` directory, or install the plugin through the WordPress plugins screen directly.
+3. Activate the plugin through the 'Plugins' screen in WordPress.
 
-**Use Lovable**
+## Usage
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/54845dfd-e36f-4d9d-861b-a96133b136e5) and start prompting.
+Use the shortcode `[insurance_cost_chart]` in any post, page, or widget area to display the chart.
 
-Changes made via Lovable will be committed automatically to this repo.
+### Shortcode Parameters
 
-**Use your preferred IDE**
+You can customize the chart by adding the following parameters to the shortcode:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+[insurance_cost_chart title="Your Custom Title" description="Your custom description text."]
 ```
 
-**Edit a file directly in GitHub**
+### Parameters:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- `title`: Changes the chart title (default: "Home Insurance Cost Comparison")
+- `description`: Changes the chart description (default: "Average monthly home insurance premiums across major North Carolina cities compared to the state average.")
 
-**Use GitHub Codespaces**
+## Features
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- Interactive bar chart showing insurance costs across North Carolina cities
+- Tooltip showing detailed information when hovering over bars
+- Ability to download the chart as an image
+- Responsive design that works on all device sizes
+- Reference line showing the state average cost
 
-## What technologies are used for this project?
+## Requirements
 
-This project is built with .
+This plugin requires a WordPress installation with JavaScript enabled in the visitor's browser.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Notes
 
-## How can I deploy this project?
+The plugin uses external dependencies from unpkg.com CDN:
+- React 18
+- ReactDOM 18
+- Recharts 2.12.7
+- Babel Standalone
+- html2canvas
 
-Simply open [Lovable](https://lovable.dev/projects/54845dfd-e36f-4d9d-861b-a96133b136e5) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+These are loaded only when the shortcode is used on a page.

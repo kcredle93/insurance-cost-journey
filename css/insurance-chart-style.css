@@ -1,0 +1,124 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+.insurance-chart-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.insurance-chart-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #090739;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.insurance-chart-description {
+  color: #6b7280;
+  max-width: 36rem;
+  margin: 0 auto 1.5rem;
+  text-align: center;
+}
+
+.insurance-chart-image {
+  width: 100%;
+  height: auto;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: block;
+}
+
+.insurance-chart-data {
+  margin-top: 2rem;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.875rem;
+}
+
+.insurance-chart-data th,
+.insurance-chart-data td {
+  border: 1px solid #e5e7eb;
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.insurance-chart-data th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #111827;
+}
+
+.insurance-chart-data td {
+  color: #374151;
+}
+
+.insurance-chart-data tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.insurance-chart-data .highlighted {
+  background-color: #fff7ed;
+}
+
+.insurance-chart-data .state-average {
+  background-color: #fffbeb;
+}
+
+.insurance-chart-data .cost {
+  font-family: monospace;
+  font-weight: 600;
+  text-align: right;
+}
+
+.insurance-chart-note {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 0.5rem;
+}
+
+.download-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #209FBD;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin: 0 auto 1rem;
+}
+
+.download-button:hover {
+  background-color: #1a8ba6;
+}
+
+.chart-container {
+  width: 100%;
+  height: 500px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .insurance-chart-title {
+    font-size: 1.5rem;
+  }
+  
+  .insurance-chart-data th,
+  .insurance-chart-data td {
+    padding: 0.5rem;
+  }
+  
+  .chart-container {
+    height: 400px;
+  }
+}
