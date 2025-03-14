@@ -71,16 +71,14 @@ const InsuranceCostComparison: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-6 py-10">
-      <div className="animate-on-scroll animate-fade-in-up">
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-insurance-dark mb-3 tracking-tight">
-            Home Insurance Cost Comparison
-          </h2>
-          <p className="text-gray-500 max-w-2xl mx-auto mb-8">
-            Average monthly home insurance premiums across major North Carolina cities compared to the state average.
-          </p>
-        </div>
+    <div className="w-full max-w-4xl mx-auto bg-white">
+      <div className="text-center mb-6">
+        <h2 className="text-3xl font-bold text-insurance-dark mb-3 tracking-tight">
+          Home Insurance Cost Comparison
+        </h2>
+        <p className="text-gray-500 max-w-2xl mx-auto mb-8">
+          Average monthly home insurance premiums across major North Carolina cities compared to the state average.
+        </p>
       </div>
       
       <div className="h-[500px] w-full bg-white">
