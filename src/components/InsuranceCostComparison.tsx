@@ -9,7 +9,8 @@ import {
   Tooltip, 
   ResponsiveContainer,
   Legend,
-  ReferenceLine
+  ReferenceLine,
+  Area
 } from 'recharts';
 import { cn } from '@/lib/utils';
 
@@ -24,7 +25,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="premium-tooltip bg-white p-3 rounded-lg shadow-lg border border-gray-100">
+      <div className="premium-tooltip bg-white p-3 rounded-xl shadow-lg border border-gray-200">
         <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">
           {data.isStateAverage ? 'State Average' : 'City'}
         </p>
@@ -48,7 +49,7 @@ const CustomDot = (props: any) => {
   // Set different colors based on data properties
   if (payload.isHighlighted) {
     strokeColor = '#D946EF';
-    size = 7;
+    size = 8;
   } else if (payload.isStateAverage) {
     strokeColor = '#0EA5E9';
   }
@@ -58,8 +59,9 @@ const CustomDot = (props: any) => {
       <circle 
         cx={cx} 
         cy={cy} 
-        r={size + 2} 
-        fill="rgba(255, 255, 255, 0.2)" 
+        r={size + 4} 
+        fill="rgba(255, 255, 255, 0.15)" 
+        className="dot-shadow"
       />
       <circle 
         cx={cx} 
@@ -67,7 +69,8 @@ const CustomDot = (props: any) => {
         r={size} 
         stroke={strokeColor} 
         strokeWidth={3} 
-        fill="#fff" 
+        fill="white" 
+        className="dot-inner"
       />
     </g>
   );
@@ -86,9 +89,18 @@ const CustomActiveDot = (props: any) => {
       <circle 
         cx={cx} 
         cy={cy} 
+        r={16} 
+        fill={baseColor} 
+        fillOpacity={0.15} 
+        className="active-dot-outer"
+      />
+      <circle 
+        cx={cx} 
+        cy={cy} 
         r={12} 
         fill={baseColor} 
-        fillOpacity={0.2} 
+        fillOpacity={0.3}
+        className="active-dot-middle" 
       />
       <circle 
         cx={cx} 
@@ -96,7 +108,8 @@ const CustomActiveDot = (props: any) => {
         r={8} 
         fill={baseColor}
         strokeWidth={2}
-        stroke="#fff" 
+        stroke="white" 
+        className="active-dot-inner"
       />
     </g>
   );
@@ -152,7 +165,7 @@ const InsuranceCostComparison: React.FC = () => {
           <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-insurance-muted text-insurance-highlight mb-2">
             Premium Analysis
           </span>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
             Home Insurance Cost Comparison
           </h2>
           <p className="text-gray-500 max-w-2xl mx-auto">
@@ -163,73 +176,91 @@ const InsuranceCostComparison: React.FC = () => {
       
       <div 
         className={cn(
-          "mt-10 h-[400px] chart-container animate-on-scroll bg-white/80 p-4 rounded-xl shadow-sm border border-gray-100",
+          "mt-10 h-[420px] chart-container animate-on-scroll rounded-2xl shadow-sm border border-gray-100 overflow-hidden bg-gradient-to-b from-white to-gray-50/80",
           animateChart ? "opacity-100" : "opacity-0"
         )}
       >
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={sortedData}
-            margin={{ top: 20, right: 30, left: 30, bottom: 40 }}
-          >
-            <defs>
-              <linearGradient id="colorCost" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.2}/>
-                <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0}/>
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.2} />
-            <XAxis 
-              dataKey="city" 
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 12, fill: '#64748b' }}
-              dy={10}
-            />
-            <YAxis 
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 12, fill: '#64748b' }}
-              domain={[200, 300]}
-              tickFormatter={(value) => `$${value}`}
-            />
-            <Tooltip 
-              content={<CustomTooltip />}
-              cursor={{ stroke: '#E5DEFF', strokeWidth: 1 }}
-            />
-            <Legend 
-              verticalAlign="top" 
-              height={36}
-              formatter={(value) => value === "cost" ? "Monthly Premium" : value}
-            />
-            <ReferenceLine 
-              y={270} 
-              stroke="#0EA5E9" 
-              strokeDasharray="3 3" 
-              label={{ 
-                value: 'State Avg: $270', 
-                position: 'right', 
-                fill: '#0EA5E9', 
-                fontSize: 12 
-              }} 
-            />
-            <Line 
-              type="monotone" 
-              dataKey="cost" 
-              stroke="#8B5CF6" 
-              strokeWidth={3}
-              dot={<CustomDot />}
-              activeDot={<CustomActiveDot />}
-              animationDuration={1500}
-              animationEasing="ease-out"
-              fill="url(#colorCost)"
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        <div className="p-5 h-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={sortedData}
+              margin={{ top: 25, right: 40, left: 30, bottom: 40 }}
+            >
+              <defs>
+                <linearGradient id="colorCost" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.2}/>
+                  <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0}/>
+                </linearGradient>
+                <filter id="glow" height="300%" width="300%" x="-100%" y="-100%">
+                  <feGaussianBlur stdDeviation="5" result="coloredBlur" />
+                  <feMerge>
+                    <feMergeNode in="coloredBlur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.15} />
+              <XAxis 
+                dataKey="city" 
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 12, fill: '#64748b' }}
+                dy={10}
+              />
+              <YAxis 
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 12, fill: '#64748b' }}
+                domain={[200, 'dataMax + 20']}
+                tickFormatter={(value) => `$${value}`}
+              />
+              <Tooltip 
+                content={<CustomTooltip />}
+                cursor={{ stroke: '#E5DEFF', strokeWidth: 1 }}
+                wrapperStyle={{ outline: 'none' }}
+              />
+              <Legend 
+                verticalAlign="top" 
+                height={36}
+                formatter={(value) => value === "cost" ? "Monthly Premium" : value}
+              />
+              <ReferenceLine 
+                y={270} 
+                stroke="#0EA5E9" 
+                strokeDasharray="3 3" 
+                label={{ 
+                  value: 'State Avg: $270', 
+                  position: 'right', 
+                  fill: '#0EA5E9', 
+                  fontSize: 12,
+                  fontWeight: 500 
+                }} 
+              />
+              <Area 
+                type="monotone" 
+                dataKey="cost" 
+                fillOpacity={1}
+                stroke="none"
+                fill="url(#colorCost)"
+              />
+              <Line 
+                type="monotone" 
+                dataKey="cost" 
+                stroke="#8B5CF6" 
+                strokeWidth={3}
+                dot={<CustomDot />}
+                activeDot={<CustomActiveDot />}
+                animationDuration={1800}
+                animationEasing="ease-out"
+                style={{ filter: 'url(#glow)' }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </div>
       
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 animate-on-scroll">
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
           <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Raleigh vs State Average</div>
           <div className="text-2xl font-bold text-gray-900">
             $5 <span className="text-green-500 text-base font-medium">lower</span>
@@ -239,7 +270,7 @@ const InsuranceCostComparison: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
           <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Lowest Premium</div>
           <div className="text-2xl font-bold text-gray-900">
             Greensboro <span className="text-insurance-highlight text-base font-medium">$221</span>
@@ -249,7 +280,7 @@ const InsuranceCostComparison: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
           <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Premium Range</div>
           <div className="text-2xl font-bold text-gray-900">
             $49 <span className="text-base font-medium text-gray-500">difference</span>
@@ -259,6 +290,15 @@ const InsuranceCostComparison: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .chart-container .recharts-surface {
+          overflow: visible;
+        }
+        .dot-inner, .active-dot-inner {
+          filter: drop-shadow(0px 2px 4px rgba(139, 92, 246, 0.3));
+        }
+      `}</style>
     </div>
   );
 };
