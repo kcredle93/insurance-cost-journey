@@ -8,7 +8,6 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  Legend,
   ReferenceLine,
   Cell
 } from 'recharts';
@@ -109,11 +108,6 @@ const InsuranceCostComparison: React.FC = () => {
               content={<CustomTooltip />}
               cursor={{ fill: 'rgba(226, 243, 251, 0.3)' }}
               wrapperStyle={{ outline: 'none' }}
-            />
-            <Legend 
-              verticalAlign="top" 
-              height={36}
-              formatter={(value) => value === "cost" ? "Monthly Premium" : value}
             />
             <ReferenceLine 
               y={270} 
