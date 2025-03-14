@@ -38,6 +38,45 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
+// Custom dot component to handle different colors based on data properties
+const CustomDot = (props: any) => {
+  const { cx, cy, payload } = props;
+  
+  let strokeColor = '#8B5CF6'; // Default color
+  
+  // Set different colors based on data properties
+  if (payload.isHighlighted) {
+    strokeColor = '#D946EF';
+  } else if (payload.isStateAverage) {
+    strokeColor = '#0EA5E9';
+  }
+  
+  return (
+    <circle 
+      cx={cx} 
+      cy={cy} 
+      r={6} 
+      stroke={strokeColor} 
+      strokeWidth={3} 
+      fill="#fff" 
+    />
+  );
+};
+
+// Custom active dot component
+const CustomActiveDot = (props: any) => {
+  const { cx, cy } = props;
+  return (
+    <circle 
+      cx={cx} 
+      cy={cy} 
+      r={8} 
+      fill="#D946EF" 
+      strokeWidth={0} 
+    />
+  );
+};
+
 const InsuranceCostComparison: React.FC = () => {
   const [animateChart, setAnimateChart] = useState(false);
   
@@ -148,13 +187,8 @@ const InsuranceCostComparison: React.FC = () => {
               dataKey="cost" 
               stroke="#8B5CF6" 
               strokeWidth={3}
-              dot={{ 
-                r: 6, 
-                strokeWidth: 3, 
-                fill: '#fff',
-                stroke: (entry) => entry.isHighlighted ? '#D946EF' : (entry.isStateAverage ? '#0EA5E9' : '#8B5CF6')
-              }}
-              activeDot={{ r: 8, strokeWidth: 0, fill: '#D946EF' }}
+              dot={<CustomDot />}
+              activeDot={<CustomActiveDot />}
               animationDuration={1500}
               animationEasing="ease-out"
             />
