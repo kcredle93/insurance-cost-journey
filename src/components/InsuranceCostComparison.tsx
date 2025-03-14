@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   BarChart,
   Bar,
@@ -13,8 +13,6 @@ import {
   Cell
 } from 'recharts';
 import { cn } from '@/lib/utils';
-import html2canvas from 'html2canvas';
-import { Download } from 'lucide-react';
 
 interface InsuranceData {
   city: string;
@@ -43,7 +41,6 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 const InsuranceCostComparison: React.FC = () => {
   const [animateChart, setAnimateChart] = useState(false);
-  const chartRef = useRef<HTMLDivElement>(null);
   
   const data: InsuranceData[] = [
     { city: 'Greensboro', cost: 221, isHighlighted: false, isStateAverage: false },
@@ -73,48 +70,18 @@ const InsuranceCostComparison: React.FC = () => {
     return "#209FBD"; // Teal blue for regular cities
   };
 
-  const handleDownloadImage = async () => {
-    if (chartRef.current) {
-      try {
-        const canvas = await html2canvas(chartRef.current, {
-          scale: 2, // Higher scale for better quality
-          backgroundColor: '#FFFFFF',
-          logging: false,
-        });
-        
-        // Convert to image
-        const image = canvas.toDataURL('image/png');
-        
-        // Create download link
-        const link = document.createElement('a');
-        link.download = 'insurance-cost-comparison.png';
-        link.href = image;
-        link.click();
-      } catch (error) {
-        console.error('Error generating image:', error);
-      }
-    }
-  };
-
   return (
-    <div className="w-full h-full bg-white font-inter">
-      <div className="text-center mb-6 pt-4">
+    <div className="w-full max-w-4xl mx-auto bg-white">
+      <div className="text-center mb-6">
         <h2 className="text-3xl font-bold text-insurance-dark mb-3 tracking-tight">
           Home Insurance Cost Comparison
         </h2>
-        <p className="text-gray-500 max-w-2xl mx-auto mb-6">
+        <p className="text-gray-500 max-w-2xl mx-auto mb-8">
           Average monthly home insurance premiums across major North Carolina cities compared to the state average.
         </p>
-        
-        <button 
-          onClick={handleDownloadImage}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-insurance-highlight text-white rounded-md hover:bg-insurance-highlight/90 transition-colors mb-4"
-        >
-          <Download size={16} /> Download Chart as Image
-        </button>
       </div>
       
-      <div ref={chartRef} className="h-[500px] w-full bg-white px-4 pb-6">
+      <div className="h-[500px] w-full bg-white">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={sortedData}
@@ -175,9 +142,6 @@ const InsuranceCostComparison: React.FC = () => {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </div>
-      <div className="text-center text-xs text-gray-400 mt-2 pb-4">
-        Data represents average monthly premiums for $200,000 homes with standard coverage.
       </div>
     </div>
   );
