@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    .insurance-chart-container {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+    
+    .insurance-chart-title {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: #090739;
+      margin-bottom: 0.75rem;
+      text-align: center;
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+    }
+    
+    .insurance-chart-description {
+      color: #6b7280;
+      max-width: 36rem;
+      margin: 0 auto 1.5rem;
+      text-align: center;
+    }
+    
+    .insurance-chart-image {
+      width: 100%;
+      height: auto;
+      max-width: 1000px;
+      margin: 0 auto;
+      display: block;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .insurance-chart-data {
+      margin-top: 2rem;
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 0.875rem;
+    }
+    
+    .insurance-chart-data th,
+    .insurance-chart-data td {
+      border: 1px solid #e5e7eb;
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+    
+    .insurance-chart-data th {
+      background-color: #f9fafb;
+      font-weight: 600;
+      color: #111827;
+    }
+    
+    .insurance-chart-data td {
+      color: #374151;
+    }
+    
+    .insurance-chart-data tr:nth-child(even) {
+      background-color: #f9fafb;
+    }
+    
+    .insurance-chart-data .highlighted {
+      background-color: #fff7ed;
+    }
+    
+    .insurance-chart-data .state-average {
+      background-color: #fffbeb;
+    }
+    
+    .insurance-chart-data .cost {
+      font-family: monospace;
+      font-weight: 600;
+      text-align: right;
+    }
+    
+    .insurance-chart-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="insurance-chart-container">
+    <h2 class="insurance-chart-title">Home Insurance Cost Comparison</h2>
+    <p class="insurance-chart-description">
+      Average monthly home insurance premiums across major North Carolina cities compared to the state average.
+    </p>
+    
+    <!-- Replace the src with the URL of your downloaded chart image -->
+    <img src="YOUR_CHART_IMAGE_URL" alt="Insurance Cost Comparison Chart" class="insurance-chart-image" />
+    
+    <table class="insurance-chart-data">
+      <thead>
+        <tr>
+          <th>City</th>
+          <th>Monthly Premium</th>
+          <th>Comparison to State Average</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Greensboro</td>
+          <td class="cost">$221</td>
+          <td>18% below average</td>
+        </tr>
+        <tr>
+          <td>Charlotte</td>
+          <td class="cost">$237</td>
+          <td>12% below average</td>
+        </tr>
+        <tr>
+          <td>Durham</td>
+          <td class="cost">$262</td>
+          <td>3% below average</td>
+        </tr>
+        <tr class="highlighted">
+          <td>Raleigh</td>
+          <td class="cost">$265</td>
+          <td>2% below average</td>
+        </tr>
+        <tr class="state-average">
+          <td><strong>North Carolina</strong> (State Average)</td>
+          <td class="cost"><strong>$270</strong></td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Greenville</td>
+          <td class="cost">$366</td>
+          <td>36% above average</td>
+        </tr>
+        <tr>
+          <td>Wilmington</td>
+          <td class="cost">$526</td>
+          <td>95% above average</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <p class="insurance-chart-note">
+      Data represents average monthly premiums for $200,000 homes with standard coverage.
+    </p>
+  </div>
+</body>
+</html>
